@@ -1,0 +1,4866 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Autobox Domain API",
+    "contact": {
+      "name": "Autobox Engineering",
+      "email": "support@autoboxcorp.com"
+    },
+    "description": "This Swagger document defines the Autobox public API and should be treated as a requirements contract.  Note that all endpoints are secured by default and are served over HTTPS.  See the `autobox-auth` project for documentation on authentication.\n\nNote that standard error responses are not called out for every endpoint.  The following standard error responses are common to *every* endpoint:\n\n|Code|Purpose|\n|---|---|\n|400|Bad Request (Client Error and deny partner login access)|\n|401|Unauthorized (the user needs to authenticate)|\n|403|Forbidden (the user does not have access to the resource)|\n|405|Wrong HTTP Method was used with the given endpoint|\n|500|Internal Server Error|\n\nMore standard error codes will be added as they become necessary.\n"
+  },
+  "basePath": "/api",
+  "host": "auth.autoboxcorp.com",
+  "produces": [
+    "application/json",
+    "application/octet-stream",
+    "text/html"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/f9/users/{username}/skills": {
+      "post": {
+        "description": "Adds an existing skill to a F9 user.\n",
+        "tags": [
+          "F9 Users",
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "skill",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-skill"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "user skill added"
+          }
+        }
+      },
+      "put": {
+        "description": "Modifies an existing skill to up level or down level in F9 user.\n",
+        "tags": [
+          "F9 Users",
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "skill",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-skill"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user skill modified"
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes a user skill from a F9 user\n",
+        "tags": [
+          "F9 Users",
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "skill",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-skill"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "user skill removed"
+          }
+        }
+      }
+    },
+    "/f9/users/{username}": {
+      "get": {
+        "description": "Get a collection of F9 users' general info filtered by a username pattern\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "display user general info",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/f9-user-general-info"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Modifies a F9 user. Returns user info for just created user. Returns internal error if user already exists.\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "user-info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-user-info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user modified",
+            "schema": {
+              "$ref": "#/definitions/f9-user-info"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a F9 user\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "user deleted"
+          }
+        }
+      }
+    },
+    "/f9/users/detail/{username}": {
+      "get": {
+        "description": "Gets five9 user detail information\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username of the five9 user that is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "display users detail info",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "generalInfo": {
+                        "$ref": "#/definitions/f9-user-general-info"
+                      },
+                      "roles": {
+                        "$ref": "#/definitions/f9-roles"
+                      },
+                      "skills": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/f9-skill"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/users": {
+      "get": {
+        "description": "Get a collection of F9 users' general info\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all users",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/f9-user-general-info"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new F9 user. Returns general info for just created user. Returns internal error if user already exists.\n",
+        "tags": [
+          "F9 Users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "user-info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-user-info"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "user created",
+            "schema": {
+              "$ref": "#/definitions/f9-user-info"
+            }
+          }
+        }
+      }
+    },
+    "/f9/skills": {
+      "get": {
+        "description": "Gets skills\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of skills",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "messageOfTheDay": {
+                        "type": "string"
+                      },
+                      "routeVoiceMails": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "New skill information\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "skillInfo",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "messageOfTheDay": {
+                  "type": "string"
+                },
+                "routeVoiceMails": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "skill": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "routeVoiceMails": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "update skill information\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "skillInfo",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "messageOfTheDay": {
+                  "type": "string"
+                },
+                "routeVoiceMails": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "skill": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "routeVoiceMails": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/skills/skillsInfo": {
+      "get": {
+        "description": "Gets skillsinfo\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of skillsinfo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "skill": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "routeVoiceMails": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "users": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "level": {
+                              "type": "integer"
+                            },
+                            "skillName": {
+                              "type": "string"
+                            },
+                            "userName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/skills/{skillname}": {
+      "get": {
+        "description": "Gets skill information\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "skillname",
+            "in": "path",
+            "description": "skillname of the skill that is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "skills",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "skill": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "messageOfTheDay": {
+                          "type": "string"
+                        },
+                        "routeVoiceMails": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "integer"
+                          },
+                          "skillName": {
+                            "type": "string"
+                          },
+                          "userName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes skill\n",
+        "tags": [
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "skillname",
+            "in": "path",
+            "description": "skillname of the skill that is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "skill deleted"
+          }
+        }
+      }
+    },
+    "/f9/lists": {
+      "get": {
+        "description": "Get a collection of list from five9\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all list",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new list on five9. Returns internal error if list already exists.\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "disposition",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "listName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "disposition created"
+          }
+        }
+      }
+    },
+    "/f9/lists/importresults/{identifier}": {
+      "get": {
+        "description": "Get the detailed outcome of a list import\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "identifier",
+            "in": "path",
+            "description": "identifier, it is similary to an id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "result of a list import",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "uploadDuplicatesCount": {
+                      "type": "string"
+                    },
+                    "uploadErrorsCount": {
+                      "type": "string"
+                    },
+                    "callNowQueued": {
+                      "type": "string"
+                    },
+                    "crmRecordsInserted": {
+                      "type": "string"
+                    },
+                    "crmRecordsUpdated": {
+                      "type": "string"
+                    },
+                    "listName": {
+                      "type": "string"
+                    },
+                    "listRecordsDeleted": {
+                      "type": "string"
+                    },
+                    "listRecordsInserted": {
+                      "type": "string"
+                    },
+                    "keyFields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "warningsCount": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/lists/importrunning/{identifier}": {
+      "get": {
+        "description": "Check if data is being imported by using the importIdentifier\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "identifier",
+            "description": "identifier, it is similary to an id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "waitTime",
+            "type": "string",
+            "description": "The optional parameter contains the result immediately, max value to set '300'.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "result of a list import",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/lists/{listName}/records": {
+      "post": {
+        "description": "Add records to a list\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "listName",
+            "in": "path",
+            "description": "list name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "records",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "listUpdateSettings": {
+                  "type": "object",
+                  "properties": {
+                    "cleanListBeforeUpdate": {
+                      "type": "boolean"
+                    },
+                    "crmAddMode": {
+                      "type": "string"
+                    },
+                    "crmUpdateMode": {
+                      "type": "string"
+                    },
+                    "listAddMode": {
+                      "type": "string"
+                    },
+                    "fieldsMapping": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "columnNumber": {
+                            "type": "integer"
+                          },
+                          "fieldName": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "importData": {
+                  "type": "object",
+                  "properties": {
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "item": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "added record(s), it returns identifier to check import status",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes record(s) from a list on five9.\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "listName",
+            "in": "path",
+            "description": "list name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "records",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "listUpdateSettings": {
+                  "type": "object",
+                  "properties": {
+                    "listDeleteMode": {
+                      "type": "string"
+                    },
+                    "fieldsMapping": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "columnNumber": {
+                            "type": "integer"
+                          },
+                          "fieldName": {
+                            "type": "string"
+                          },
+                          "key": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "importData": {
+                  "type": "object",
+                  "properties": {
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "item": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "deleted record(s), it returns identifier to check import status",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/lists/{listName}": {
+      "delete": {
+        "description": "Deletes a list on five9.\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "listName",
+            "in": "path",
+            "description": "list name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "disposition deleted"
+          }
+        }
+      },
+      "get": {
+        "description": "Gets a list on five9.\n",
+        "tags": [
+          "F9 Lists"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "Access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "Application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "listName",
+            "in": "path",
+            "description": "List name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list was successfully obtained",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Name of dialing list"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "Size of dialing list"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/dispositions": {
+      "get": {
+        "description": "Get a collection of disposition from five9\n",
+        "tags": [
+          "F9 Dispositions"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all dispostions",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/f9-disposition"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new disposition on five9. Returns internal error if disposition already exists.\n",
+        "tags": [
+          "F9 Dispositions"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "disposition",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-disposition-create-update"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "disposition created"
+          }
+        }
+      }
+    },
+    "/f9/dispositions/{dispositionName}": {
+      "get": {
+        "description": "Gets a disposition from five9.\n",
+        "tags": [
+          "F9 Dispositions"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "dispositionName",
+            "in": "path",
+            "description": "disposition name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "disposition",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/f9-disposition"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "disposition updated"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a disposition on five9. Returns internal error if disposition already exists.\n",
+        "tags": [
+          "F9 Dispositions"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "dispositionName",
+            "in": "path",
+            "description": "disposition name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "disposition",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/f9-disposition-create-update"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "disposition updated"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a disposition on five9.\n",
+        "tags": [
+          "F9 Dispositions"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "dispositionName",
+            "in": "path",
+            "description": "disposition name, it is similary to an id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "disposition deleted"
+          }
+        }
+      }
+    },
+    "/f9/contacts/fields": {
+      "get": {
+        "description": "Get the configuration of (all) contact fields.\n",
+        "tags": [
+          "F9 Contact Fields"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "type": "string",
+            "description": "The optional parameter to get only a contact fields.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "result of contact fields",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "displayAs": {
+                        "type": "string"
+                      },
+                      "mapTo": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "system": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/strategies/{campaignName}": {
+      "put": {
+        "description": "It overrides the dialing strategies for the specified campaign",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to update his dialing strategies",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaignStrategies",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/f9-campaignStrategy"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "autodial campaign successfully created"
+          }
+        }
+      },
+      "get": {
+        "description": "It obtains a list of dialing strategies for the specified campaign",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "name": "appname",
+            "in": "header",
+            "description": "application name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "access token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a list of dialing strategies for the specified campaign",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/f9-campaignStrategy"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns": {
+      "get": {
+        "description": "Gets all campaigns.\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned campaigns.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "mode": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "trainingMode": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/autodial/{campaignName}": {
+      "get": {
+        "description": "Gets a autodial campaign. Some properties will appear in accordance with the campaign configuration\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get data",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "info campaign",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "$ref": "#/definitions/f9-autodialCampaign"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates an autodial campaign. Please consider that the name in the path will override the name in the body.\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "name": "appname",
+            "in": "header",
+            "description": "application name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "access token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "name of the autodial campaign to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "autodial",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-autodialCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "autodial campaign successfully updated"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/autodial": {
+      "post": {
+        "description": "Creates a new autodial campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaign",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-autodialCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "autodial campaign successfully created"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/inbound/{campaignName}": {
+      "get": {
+        "description": "Gets a inbound campaign. Some properties will appear in accordance with the campaign configuration\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get data",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "info campaign",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "$ref": "#/definitions/f9-baseInboundCampaign"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates an inbound campaign. Please consider that the name in the path will override the name in the body.\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "name": "appname",
+            "in": "header",
+            "description": "application name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "access token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "name of the inbound campaign to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaign",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-baseInboundCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "inbound campaign successfully updated"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/inbound": {
+      "post": {
+        "description": "Creates a new inbound campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "name": "appname",
+            "in": "header",
+            "description": "application name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "access token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaign",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-baseInboundCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "inbound campaign successfully created"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/outbound/{campaignName}": {
+      "get": {
+        "description": "Gets a outbound campaign. Some properties will appear in accordance with the campaign configuration\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get data",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "info campaign",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "$ref": "#/definitions/f9-outboundCampaign"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a outbound campaign, this endpoint show the parameter in the body to update \"Autodial Options\" tab, please consider that the name in the path will override the name in the body.\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "name": "appname",
+            "in": "header",
+            "description": "application name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "access token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "current campaign name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "outbound",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-outboundCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "campaign successfully updated"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/outbound": {
+      "post": {
+        "description": "Creates a new campaign of oubound type\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "Campaign",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/f9-outboundCampaign"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "outbound campaign created"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/{campaignName}": {
+      "delete": {
+        "description": "deletes campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Campaign deleted"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/dnis": {
+      "get": {
+        "description": "Gets dnis\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of dnis",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add dni to campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "dnisInfo",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "campaignName": {
+                  "type": "string"
+                },
+                "DNISList": {
+                  "type": "array",
+                  "description": "DNISList have to exist to add on campaign",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "dnis added"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/dnis/{campaignName}": {
+      "delete": {
+        "description": "deletes dnis from campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to delete dnis",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dnis",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "DNISList": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "dnis deleted"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/lists": {
+      "get": {
+        "description": "Get lists\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of lists",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add dni to campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "listsInfo",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "campaignName": {
+                  "type": "string"
+                },
+                "lists": {
+                  "type": "array",
+                  "description": "lists have to exist to add on campaign",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "listName": {
+                        "type": "string"
+                      },
+                      "dialingPriority": {
+                        "type": "integer"
+                      },
+                      "dialingRatio": {
+                        "type": "integer"
+                      },
+                      "priority": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lists added"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/lists/{campaignName}": {
+      "delete": {
+        "description": "deletes lists from campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to delete lists",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lists",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lists": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lists deleted"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/ivrscripts": {
+      "get": {
+        "description": "Get IVRScripts\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of IVRScripts",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "xmlDefinition": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/start/{campaignName}": {
+      "put": {
+        "description": "Starts a Campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get status campaign",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign successfully started"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/stop/{campaignName}": {
+      "put": {
+        "description": "Stops a Campaign\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get status campaign",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign successfully stopped"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/attached/lists/{campaignName}": {
+      "get": {
+        "description": "Gets attached lists\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get attached lists",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of attached lists",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "campaignName": {
+                        "type": "string"
+                      },
+                      "listName": {
+                        "type": "string"
+                      },
+                      "dialingPriority": {
+                        "type": "integer"
+                      },
+                      "dialingRatio": {
+                        "type": "integer"
+                      },
+                      "priority": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/attached/dnis/{campaignName}": {
+      "get": {
+        "description": "Gets attached dnis\n",
+        "tags": [
+          "F9 Campaigns"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "campaignName",
+            "in": "path",
+            "description": "campaignName to get attached dnis",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of attached dnis",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/{campaignName}/skills": {
+      "put": {
+        "description": "Adds an existing skill to a F9 campaign.\n",
+        "tags": [
+          "F9 Campaigns",
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "campaignName",
+            "description": "campaignName of the five9 campaign that is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "skill",
+            "required": true,
+            "description": "array of the skills names",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "skills": {
+                  "type": "array",
+                  "description": "array of the skills names",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "campaign skill added"
+          }
+        }
+      },
+      "delete": {
+        "description": "Removes a skill from a F9 campaign\n",
+        "tags": [
+          "F9 Campaigns",
+          "F9 Skills"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "campaignName",
+            "description": "the campaignName is like unique ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "skill",
+            "required": true,
+            "description": "array of the skills names",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "skills": {
+                  "description": "array of the skills names",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "campaign skill removed"
+          }
+        }
+      }
+    },
+    "/f9/campaigns/profiles": {
+      "get": {
+        "description": "Get all campaign profiles\n",
+        "tags": [
+          "F9 Campaign Profiles"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "query",
+            "name": "nameProfile",
+            "type": "string",
+            "description": "The optional parameter that filters if the item is matched.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of campaign profiles",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/f9-campaign-profile"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new profile on five9. Returns internal error if the profile already exists.\n",
+        "tags": [
+          "F9 Campaign Profiles"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "profileName",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "profile created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "return": {
+                  "$ref": "#/definitions/f9-campaign-profile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/f9/campaigns/profiles/{profileName}": {
+      "delete": {
+        "description": "Removes a profile from a F9 campaign\n",
+        "tags": [
+          "F9 Campaign Profiles"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "header",
+            "name": "appname",
+            "required": true,
+            "description": "application name",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "profileName",
+            "description": "the profileName is like unique ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "campaign profile removed"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "Authenticates the user and return a token.\n",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Auth Request",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "description": "User's credentials to validate in json format.",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "description": "User name into domain. For example, username@domain.com"
+                },
+                "password": {
+                  "type": "string",
+                  "description": "user password into domain"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "schema": {
+              "type": "string",
+              "description": "Token generated, it indicates that the user was authenticated.",
+              "format": "jwt token"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "This endpoint will log out the user.\n",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was logged out."
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "put": {
+        "description": "Receives a token that will be validated; if it is valid, returns a new valid refreshen token\n",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "token",
+            "in": "body",
+            "description": "The token sent",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "schema": {
+              "type": "string",
+              "description": "Refreshen Token, new token with extended expiration time by 1 hour.",
+              "format": "jwt token"
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "description": "Gets users\n",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of users",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a user.\n",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "activationCode": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created user"
+          },
+          "400": {
+            "description": "Bad parameters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The activation code was already used",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/profile": {
+      "get": {
+        "description": "This endpoint get a user profile.\n",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "There is an existing user profile",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "firstname": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "There is no an existing valid profile",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/partner/{partnername}/lastusedaccount": {
+      "get": {
+        "description": "This endpoint will associate partner account with an aplication.\n",
+        "tags": [
+          "User Accounts"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "partnername",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "There is an existing valid username",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "204": {
+            "description": "There is no an existing valid username",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/partners/{partnerName}/accounts": {
+      "get": {
+        "description": "Gets all accounts by partner name.\n",
+        "tags": [
+          "User Accounts"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "partnerName",
+            "in": "path",
+            "description": "partnerName as ID to fetch all accounts",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user accounts",
+            "schema": {
+              "type": "array",
+              "description": "it will return an empty array if parameter {partnerName} has not accounts associated.",
+              "items": {
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/partner/app": {
+      "post": {
+        "description": "This endpoint will associate partner account with an aplication.\n",
+        "tags": [
+          "User Accounts"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "appaccount",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "partnerId": {
+                  "type": "string"
+                },
+                "appName": {
+                  "type": "string"
+                },
+                "credentials": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has been fulfilled",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "This endpoint will unlink the username of an application.\n",
+        "tags": [
+          "User Accounts"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "partner data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "partnerId": {
+                  "type": "string"
+                },
+                "appName": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The request has been fulfilled",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/auth": {
+      "post": {
+        "description": "Authenticates the account user partner\n",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "body",
+            "name": "credentials",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "partnerId": {
+                  "type": "string"
+                },
+                "appName": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has been fulfilled",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/admin/temporaryusers": {
+      "post": {
+        "description": "Registers a new user in a temporary account that will be activated after clicking activation account and complete the register\n",
+        "tags": [
+          "TempUser"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "The user info to be registered",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstname": {
+                  "type": "string",
+                  "description": "First name user"
+                },
+                "lastname": {
+                  "type": "string",
+                  "description": "Last name user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email as username"
+                },
+                "company": {
+                  "type": "string",
+                  "description": "This is an ID of Company"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The account was created. An email was sent to activate the user account. The returned user info contains the generated activation code .",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "resource id of this user"
+                },
+                "firstname": {
+                  "type": "string",
+                  "description": "firstname for this user"
+                },
+                "lastname": {
+                  "type": "string",
+                  "description": "lastname for this user"
+                },
+                "company": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Company ID"
+                    }
+                  }
+                },
+                "email": {
+                  "type": "string",
+                  "description": "the email for this user"
+                },
+                "activationCode": {
+                  "type": "string",
+                  "description": "the code generated for this user"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The general validation before registering",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/temporaryusers/{activationCode}": {
+      "get": {
+        "description": "Gets temporary user info by activationCode\n",
+        "tags": [
+          "TempUser"
+        ],
+        "parameters": [
+          {
+            "name": "activationCode",
+            "in": "path",
+            "description": "The activationCode of the temporary user that is like unique ID to activate the account.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The temporary user info and its company",
+            "schema": {
+              "$ref": "#/definitions/temporary-user"
+            }
+          },
+          "400": {
+            "description": "The activationCode must be required",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The activation code was already used",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/companies": {
+      "get": {
+        "description": "Gets all active companies\n",
+        "tags": [
+          "Companies"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of companies",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/company"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/apps/filter": {
+      "get": {
+        "description": "Gets user applications filters status, installed and size\n",
+        "tags": [
+          "Applications"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "description": "The optional parameter, it can take the next values \"active\", \"inactive\", \"comingsoon\".",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "installed",
+            "type": "boolean",
+            "description": "The optional parameter to filter installed applications. it accept true/false",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "type": "integer",
+            "description": "The optional parameter to get user applications. it has a default value equal to five.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of applications",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/application"
+              }
+            }
+          },
+          "400": {
+            "description": "Filter parameters have invalid values",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "An error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/apps/{name}": {
+      "get": {
+        "description": "Gets information of an application using its name\n",
+        "tags": [
+          "Applications"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "description": "access token",
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "in": "path",
+            "name": "name",
+            "description": "application name, it similary to Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "one application",
+            "schema": {
+              "$ref": "#/definitions/application"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "app-data": {
+      "type": "object",
+      "description": "an application of autoboxcorp",
+      "properties": {
+        "appName": {
+          "type": "string",
+          "description": "the short name of the application"
+        },
+        "appFullName": {
+          "type": "string",
+          "description": "the full name of the application"
+        },
+        "description": {
+          "type": "string",
+          "description": "a description for the application"
+        },
+        "appStatus": {
+          "type": "integer",
+          "description": "application status, it can has the next values 1=ACTIVE, 2=INACTIVE, 3=COMING_SOON"
+        },
+        "appRequirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "a message about the requirements needed to get the application"
+          }
+        }
+      }
+    },
+    "partner": {
+      "type": "object",
+      "description": "a partner of autoboxcorp",
+      "properties": {
+        "partnerName": {
+          "type": "string",
+          "description": "the short name of the partner"
+        },
+        "partnerFullName": {
+          "type": "string",
+          "description": "the full name of the partner"
+        }
+      }
+    },
+    "application": {
+      "type": "object",
+      "description": "display applications and its partner",
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/app-data"
+        },
+        "partner": {
+          "$ref": "#/definitions/partner"
+        },
+        "installed": {
+          "type": "boolean",
+          "description": "if true, user has installed application"
+        }
+      }
+    },
+    "company": {
+      "type": "object",
+      "description": "a company of autoboxcorp",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "resource id of this company"
+        },
+        "companyName": {
+          "type": "string",
+          "description": "the company name"
+        }
+      }
+    },
+    "temporary-user": {
+      "type": "object",
+      "description": "a temporary user that needs to be validated before the account for the user is created",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "resource id of this user"
+        },
+        "firstname": {
+          "type": "string",
+          "description": "firstname for this user"
+        },
+        "lastname": {
+          "type": "string",
+          "description": "lastname for this user"
+        },
+        "domain": {
+          "type": "string",
+          "description": "domain for this user"
+        },
+        "email": {
+          "type": "string",
+          "description": "the email for this user"
+        },
+        "role": {
+          "type": "string",
+          "description": "the role of this user"
+        },
+        "status": {
+          "type": "string",
+          "description": "the status for this user"
+        },
+        "verificationToken": {
+          "type": "string",
+          "description": "the token generated for this user"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "description": "a user of the platform",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "resource id of this user"
+        },
+        "firstname": {
+          "type": "string",
+          "description": "firstname for this user"
+        },
+        "lastname": {
+          "type": "string",
+          "description": "lastname for this user"
+        },
+        "company": {
+          "$ref": "#/definitions/company"
+        },
+        "email": {
+          "type": "string",
+          "description": "the email for this user"
+        },
+        "password": {
+          "type": "string",
+          "description": "the password for this user"
+        },
+        "role": {
+          "type": "string",
+          "description": "the role of this user"
+        },
+        "status": {
+          "type": "string",
+          "description": "the status for this user"
+        }
+      }
+    },
+    "f9-basecampaign": {
+      "type": "object",
+      "required": [
+        "description",
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description of the campaign. Used in F9 campaign properties - General tab."
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "BASIC",
+            "ADVANCED"
+          ],
+          "description": "Campaign mode. Used in F9 campaign properties - General tab."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the campaign. Used in F9 campaign properties - General tab."
+        },
+        "profileName": {
+          "type": "string",
+          "description": "Campaign profile name. Applies only to the advanced campaign mode."
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "NOT_RUNNING",
+            "STARTING",
+            "RUNNING",
+            "STOPPING",
+            "RESETTING"
+          ],
+          "description": "Current state of the campaign."
+        },
+        "scriptParameters": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "OUTBOUND",
+            "AUTODIAL",
+            "INBOUND"
+          ],
+          "description": "Category of campaign."
+        }
+      }
+    },
+    "f9-generalCampaign": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/f9-basecampaign"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "autoRecord": {
+              "type": "boolean",
+              "description": "Whether to record all calls of the campaign. Used in F9 campaign properties - Recording tab."
+            },
+            "callWrapup": {
+              "type": "object",
+              "description": "Details for the work time after the call. Used in F9 campaign properties - General tab.",
+              "properties": {
+                "agentNotReady": {
+                  "type": "boolean",
+                  "description": "Whether to automatically place agents who reach a call timeout in a Not Ready state."
+                },
+                "dispostionName": {
+                  "type": "string",
+                  "description": "Name of disposition automatically set for the call if the timeout is reached."
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether to limit the wrap-up time of agents."
+                },
+                "reasonCodeName": {
+                  "type": "string",
+                  "description": "Not Ready reason code for agents who are automatically placed in Not Ready state after reaching the timeout"
+                },
+                "timeout": {
+                  "type": "object",
+                  "description": "Time limit for agents in wrap-up mode.",
+                  "properties": {
+                    "days": {
+                      "type": "integer"
+                    },
+                    "hours": {
+                      "type": "integer"
+                    },
+                    "minutes": {
+                      "type": "integer"
+                    },
+                    "seconds": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "ftpHost": {
+              "type": "string",
+              "description": "Host name of the FTP server. Used in F9 campaign properties - Recording tab."
+            },
+            "ftpPassword": {
+              "type": "string",
+              "description": "Password of the FTP server. Used in F9 campaign properties - Recording tab."
+            },
+            "ftpUser": {
+              "type": "string",
+              "description": "User name for the FTP server. Used in F9 campaign properties - Recording tab."
+            },
+            "recordingNameAsSid": {
+              "type": "boolean",
+              "description": "For FTP transfer, whether to use the session ID as the recording name. Used in F9 campaign properties - Recording tab."
+            },
+            "useFtp": {
+              "type": "boolean",
+              "description": "Whether to use FTP to transfer recordings. Used in F9 campaign properties - Recording tab."
+            }
+          }
+        }
+      ]
+    },
+    "f9-baseOutboundCampaign": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/f9-generalCampaign"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "analyzeLevel": {
+              "type": "integer",
+              "description": "Voice detection level for an answering machine. The values range from 0 (fast detection) to 11 (accurate detection). Used in F9 campaign properties - Dial Options tab."
+            },
+            "CRMRedialTimeout": {
+              "type": "object",
+              "description": "Minimum time before redialing a contact record after all numbers for the contact record have been dialed or skipped. The default is 10 minutes. Used in F9 campaign properties - Dial Options tab.",
+              "properties": {
+                "days": {
+                  "type": "integer"
+                },
+                "hours": {
+                  "type": "integer"
+                },
+                "minutes": {
+                  "type": "integer"
+                },
+                "seconds": {
+                  "type": "integer"
+                }
+              }
+            },
+            "dialingByStateRules": {
+              "type": "boolean",
+              "description": "Whether to configure the campaign to follow state dialing rules created in the VCC. Used in F9 campaign properties - Dial Options tab."
+            },
+            "dnisAsAni": {
+              "type": "boolean",
+              "description": "When transferring calls to third parties, whether to override the default DNIS of the domain by using the contact’s phone number (ANI) as the DNIS (caller ID)."
+            },
+            "enableListDialingRatios": {
+              "type": "boolean",
+              "description": "Whether to use list dialing ratios, which enable multiple lists to be dialed at specified frequencies. Used in F9 campaign properties - Lists tab."
+            },
+            "listDialingMode": {
+              "type": "string",
+              "description": "Describes the list dialing mode. Used in F9 campaign properties - Dial Options tab.",
+              "enum": [
+                "VERTICAL_DIALING",
+                "LIST_PENETRATION",
+                "EXTENDED_STRATEGY"
+              ]
+            },
+            "noOutOfNumbersAlert": {
+              "type": "boolean",
+              "description": "When an outbound campaign runs out of numbers to dial, whether to turn off notification messages to administrators and supervisors that the campaign is no longer dialing because the lists are complete.  Used in F9 campaign properties - General tab."
+            }
+          }
+        }
+      ]
+    },
+    "f9-campaignStrategy": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Optional description of the strategy. Used in F9 campaign properties - Dial Options tab."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the strategy is active. At least one strategy, named Default, must be active. Used in F9 campaign properties - Dial Options tab."
+        },
+        "filter": {
+          "type": "object",
+          "description": "Conditions that apply to a strategy Used in F9 campaign properties - Dial Options tab.",
+          "properties": {
+            "conditionGroupingType": {
+              "type": "string",
+              "description": "Types of filters that you can apply.",
+              "enum": [
+                "All",
+                "Any",
+                "Custom"
+              ]
+            },
+            "conditions": {
+              "type": "array",
+              "description": "List of criteria used by the dialer to filter records.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "compareOperator": {
+                    "type": "string",
+                    "description": "Comparison between the contact field (left value) and the value (right value).",
+                    "enum": [
+                      "Contains",
+                      "DontContains",
+                      "IsNull",
+                      "IsNotNull",
+                      "EndsWith",
+                      "Equals",
+                      "NotEqual",
+                      "Greater",
+                      "GreaterOrEqual",
+                      "Less",
+                      "LessOrEqual",
+                      "Like",
+                      "StartsWith"
+                    ]
+                  },
+                  "leftValue": {
+                    "type": "string",
+                    "description": "Contact field or variable to use as filter."
+                  },
+                  "rightValue": {
+                    "type": "string",
+                    "description": "Value to use as filter."
+                  }
+                }
+              }
+            },
+            "customGrouping": {
+              "type": "string",
+              "description": "Custom type of group."
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "Required name of the strategy. However, you can modify the name at any time. Used in F9 campaign properties - Dial Options tab."
+        },
+        "schedule": {
+          "type": "array",
+          "description": "Dialing pattern for the strategy. Used in F9 campaign properties - Dial Options tab.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "redialAfterMins": {
+                "type": "integer",
+                "description": "Number of minutes for the dialer to wait before redialing a number."
+              },
+              "startFromDay": {
+                "type": "integer",
+                "description": "Day of the week to start the strategy."
+              }
+            }
+          }
+        },
+        "startAfterTimeMins": {
+          "type": "integer",
+          "description": "Start time (HH:MM) for the strategy. The strategy can start as soon as the dialing list is ready. If you leave this field blank, the dialer starts to dial immediately. Used in F9 campaign properties - Dial Options tab."
+        }
+      }
+    },
+    "f9-autodialCampaign": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/f9-baseOutboundCampaign"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "agentAvailability": {
+              "type": "string",
+              "description": "Types of agent states considered available. Autodial campaigns dial only agents that are available to process calls. If omitted, the list is dialed continuously regardless of agent availability.  Used in F9 campaign properties - Dial Options tab.",
+              "enum": [
+                "ReadyToReceiveCalls",
+                "ReadyToReceiveCallsOrBusy",
+                "LoggedIn"
+              ]
+            },
+            "agentSkillName": {
+              "type": "string",
+              "description": "Numbers dialed only if agents with the specified skill are available. If empty when dialIfAgentsAvailable=True, agent availability is for any skill. When modifyAutodialCampaign specifies agentSkillName=null, the value remains.  Used in F9 campaign properties - Dial Options tab."
+            },
+            "defaultIvrSchedule": {
+              "type": "object",
+              "required": [
+                "scriptName"
+              ],
+              "description": "Schedule of the IVR script that processes call flow. Required for inbound and autodial calls. Used in F9 campaign properties - IVR tab.",
+              "properties": {
+                "chatEnabled": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "scriptName": {
+                  "type": "string"
+                },
+                "scriptParameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "visualModeEnabled": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "dialIfAgentsAvailable": {
+              "type": "boolean",
+              "description": "Whether to dial numbers only if agents with agentSkillName are available. Used in F9 campaign properties - Dial Options tab."
+            },
+            "maxNumOfLines": {
+              "type": "integer",
+              "description": "Maximum number of outbound phone lines dedicated to the campaign. Used in F9 campaign properties - General tab."
+            }
+          }
+        }
+      ]
+    },
+    "f9-baseInboundCampaign": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/f9-generalCampaign"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "trainingMode": {
+              "type": "boolean",
+              "description": "Whether the campaign is in training mode. True, Campaign in training mode. False, Campaign not in training mode."
+            },
+            "maxNumOfLines": {
+              "type": "integer",
+              "description": "Maximum number of inbound phone lines dedicated to the campaign. Used in F9 campaign properties - General tab."
+            },
+            "defaultIvrSchedule": {
+              "type": "object",
+              "required": [
+                "scriptName"
+              ],
+              "description": "Schedule of the IVR script that processes call flow. Required for inbound and autodial calls. Used in F9 campaign properties - IVR tab.",
+              "properties": {
+                "chatEnabled": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "scriptName": {
+                  "type": "string"
+                },
+                "scriptParameters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "visualModeEnabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "f9-outboundCampaign": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/f9-baseOutboundCampaign"
+        },
+        {
+          "type": "object",
+          "description": "outbound campaing",
+          "properties": {
+            "actionOnAnswerMachine": {
+              "type": "object",
+              "description": "action to take when the answering machine is detected.(\"Dialing Options\" tab)",
+              "properties": {
+                "actionArgument": {
+                  "type": "string",
+                  "description": "name of prompt or IVR script to execute when a campaign-related event occurs. It is ignored when action type is DROP_CALL."
+                },
+                "actionType": {
+                  "type": "string",
+                  "description": "action to take when a specific event occurs.",
+                  "enum": [
+                    "DROP_CALL",
+                    "PLAY_PROMPT",
+                    "START_IVR_SCRIPT"
+                  ]
+                },
+                "maxWaitTime": {
+                  "type": "object",
+                  "description": "maximum waiting time for action on answering machine.",
+                  "properties": {
+                    "days": {
+                      "type": "integer"
+                    },
+                    "hours": {
+                      "type": "integer"
+                    },
+                    "minutes": {
+                      "type": "integer"
+                    },
+                    "seconds": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "actionOnQueueExpiration": {
+              "type": "object",
+              "description": "action to take when the maximum queue time expires, which occurs when no agent is available to take a call.(\"Dialing Options\" tab)",
+              "properties": {
+                "actionArgument": {
+                  "type": "string",
+                  "description": "name of prompt or IVR script to execute when a campaign-related event occurs. It is ignored when action type is DROP_CALL."
+                },
+                "actionType": {
+                  "type": "string",
+                  "description": "action to take when a specific event occurs.",
+                  "enum": [
+                    "DROP_CALL",
+                    "PLAY_PROMPT",
+                    "START_IVR_SCRIPT"
+                  ]
+                },
+                "maxWaitTime": {
+                  "type": "object",
+                  "description": "maximum waiting time for action on answering machine.",
+                  "properties": {
+                    "days": {
+                      "type": "integer"
+                    },
+                    "hours": {
+                      "type": "integer"
+                    },
+                    "minutes": {
+                      "type": "integer"
+                    },
+                    "seconds": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            },
+            "callAnalysisMode": {
+              "type": "string",
+              "description": "types of attempts when a call is answered.(\"Dialing Options\" tab)",
+              "enum": [
+                "NO_ANALYSIS",
+                "FAX_ONLY",
+                "FAX_AND_ANSWERING_MACHINE"
+              ]
+            },
+            "callsAgentRatio": {
+              "type": "number",
+              "format": "double",
+              "description": "for campaigns in the predictive mode, number of phone numbers dialed for an agent ready for a new call.(\"Dialing Options\" tab)"
+            },
+            "dialNumberOnTimeout": {
+              "type": "boolean",
+              "description": "for campaigns in the preview mode, setup to true Dial number when preview time expires or false Set agent to Not Ready state.(\"Dialing Options\" tab)"
+            },
+            "dialingMode": {
+              "type": "string",
+              "description": "describes the list dialing mode.(\"Dialing Options\" tab)",
+              "enum": [
+                "PREDICTIVE",
+                "PROGRESSIVE",
+                "PREVIEW",
+                "POWER"
+              ]
+            },
+            "distributionAlgorithm": {
+              "type": "string",
+              "description": "method used by the ACD to transfer calls to agents. Restricted to values",
+              "enum": [
+                "LongestReadyTime",
+                "LongestReadyTimeExcludeMC",
+                "RoundRobin",
+                "MinCallsHandled",
+                "MinHandleTime"
+              ]
+            },
+            "distributionTimeFrame": {
+              "type": "string",
+              "description": "time intervals used by distributionAlgorithm. Restricted to values",
+              "enum": [
+                "minutes15",
+                "minutes30",
+                "minutes60",
+                "hours8",
+                "hours24",
+                "thisDay"
+              ]
+            },
+            "limitPreviewTime": {
+              "type": "boolean",
+              "description": "for campaigns in the preview mode, use as follows • true Dial contact number after maxPreviewTime. • false Allow agents to preview the contact number for an unlimited time.(\"Dialing Options\" tab)"
+            },
+            "maxDroppedCallsPercentage": {
+              "type": "number",
+              "format": "float",
+              "description": "maximum allowed percentage of dropped calls. Use when monitorDroppedCalls is set to true.(\"Dialing Options\" tab)"
+            },
+            "maxPreviewTime": {
+              "type": "object",
+              "description": "duration until expiration of the preview time.(\"Dialing Options\" tab)",
+              "properties": {
+                "days": {
+                  "type": "integer"
+                },
+                "hours": {
+                  "type": "integer"
+                },
+                "minutes": {
+                  "type": "integer"
+                },
+                "seconds": {
+                  "type": "integer"
+                }
+              }
+            },
+            "maxQueueTime": {
+              "type": "object",
+              "description": "maximum time allowed for calls in a queue.",
+              "properties": {
+                "days": {
+                  "type": "integer"
+                },
+                "hours": {
+                  "type": "integer"
+                },
+                "minutes": {
+                  "type": "integer"
+                },
+                "seconds": {
+                  "type": "integer"
+                }
+              }
+            },
+            "monitorDroppedCalls": {
+              "type": "boolean",
+              "description": "whether to keep track of the dropped call percentage of the campaign. • true Keep track of the dropped calls for the last 30 days or since the last reset. • false Do not keep track of the dropped calls.(\"Dialing Options\" tab)"
+            },
+            "previewDialImmediately": {
+              "type": "boolean",
+              "description": "for outbound campaigns in preview mode, use as follows • true Automatically dial the number without waiting for an action from the agent. • false Do not dial the number automatically.(\"Dialing Options\" tab)"
+            }
+          }
+        }
+      ]
+    },
+    "f9-campaign-profile": {
+      "type": "object",
+      "description": "this data type contains the details of a campaign profile.",
+      "properties": {
+        "ANI": {
+          "description": "ANI to send with outbound call.",
+          "type": "string"
+        },
+        "description": {
+          "description": "description of the profile.",
+          "type": "string"
+        },
+        "dialingTimeout": {
+          "description": "time to wait before disconnecting an unanswered call and logging it as No Answer. The default is 17 seconds.",
+          "type": "integer"
+        },
+        "initialCallPriority": {
+          "description": "priority initially assigned to inbound and outbound calls on a scale of 1 to 100. Inbound calls have a default priority of 60. Calls with a higher priority are answered first, regardless of their time in a queue. To force calls from a campaign to be answered before those from other campaigns, increase the priority by 1.",
+          "type": "integer"
+        },
+        "maxCharges": {
+          "description": "applies to inbound and outbound calls. Maximum dollar amount for long distance charges. The campaign stops automatically when this amount is reached. Zero means no limit.",
+          "type": "integer"
+        },
+        "name": {
+          "description": "name of campaign profile.",
+          "type": "string"
+        },
+        "numberOfAttempts": {
+          "description": "for outbound campaigns, number of dialing attempts for phone numbers in a list record, including redials due to disposition settings.",
+          "type": "integer"
+        },
+        "dialingSchedule": {
+          "description": "order and time for dialing the numbers in a record.",
+          "type": "object",
+          "properties": {
+            "dialASAPSortOrder": {
+              "description": "order for dialing numbers in the ASAP queue.",
+              "type": "string"
+            },
+            "dialASAPTimeout": {
+              "description": "duration before records that are not dialed are removed from the ASAP queue and are treated as normal records.",
+              "type": "integer"
+            },
+            "dialASAPTimeoutPeriod": {
+              "description": "unit that specifies the dial ASAP timeout.",
+              "type": "string"
+            },
+            "dialingOrder": {
+              "description": "dialing order when contact records have multiple phone numbers.",
+              "type": "string"
+            },
+            "dialingSchedules": {
+              "description": "time ranges used to call each of the three possible number associated with a campaign.",
+              "type": "array",
+              "items": {
+                "properties": {
+                  "number": {
+                    "description": "which numbers associated with a record to consider.",
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "description": "when, in local time, to start dialing numbers for an outbound campaign.",
+                    "type": "object",
+                    "properties": {
+                      "days": {
+                        "description": "number of days.",
+                        "type": "integer"
+                      },
+                      "hours": {
+                        "description": "number of hours from 0 to 23.",
+                        "type": "integer"
+                      },
+                      "minutes": {
+                        "description": "number of minutes from 0 to 59.",
+                        "type": "integer"
+                      },
+                      "seconds": {
+                        "description": "number of seconds from 0 to 59.",
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "stopTime": {
+                    "description": "when to stop dialing numbers.",
+                    "type": "object",
+                    "properties": {
+                      "days": {
+                        "description": "number of days.",
+                        "type": "integer"
+                      },
+                      "hours": {
+                        "description": "number of hours from 0 to 23.",
+                        "type": "integer"
+                      },
+                      "minutes": {
+                        "description": "number of minutes from 0 to 59.",
+                        "type": "integer"
+                      },
+                      "seconds": {
+                        "description": "number of seconds from 0 to 59.",
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "includeNumbers": {
+              "description": "this array contains the types of numbers (Primary, Alt1, Alt2) associated with a campaign.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "f9-disposition": {
+      "type": "object",
+      "description": "a disposition",
+      "properties": {
+        "agentMustCompleteWorksheet": {
+          "type": "boolean"
+        },
+        "agentMustConfirm": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resetAttemptsCounter": {
+          "type": "boolean"
+        },
+        "sendEmailNotification": {
+          "type": "boolean"
+        },
+        "sendIMNotification": {
+          "type": "boolean"
+        },
+        "trackAsFirstCallResolution": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "description": "dispostion type and it can have the following values [DoNotDial, RedialNumber, FinalDisp, FinalApplyToCampaigns, AddActiveNumber, AddAndFinalize, AddAllNumbers]"
+        },
+        "typeParameters": {
+          "type": "object",
+          "properties": {
+            "allowChangeTimer": {
+              "type": "boolean"
+            },
+            "attempts": {
+              "type": "string",
+              "description": "it s a integer"
+            },
+            "timer": {
+              "type": "object",
+              "properties": {
+                "days": {
+                  "type": "integer"
+                },
+                "hours": {
+                  "type": "integer"
+                },
+                "minutes": {
+                  "type": "integer"
+                },
+                "seconds": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "f9-disposition-create-update": {
+      "type": "object",
+      "description": "a disposition",
+      "properties": {
+        "disposition": {
+          "type": "object",
+          "properties": {
+            "agentMustCompleteWorksheet": {
+              "type": "boolean"
+            },
+            "agentMustConfirm": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "resetAttemptsCounter": {
+              "type": "boolean"
+            },
+            "trackAsFirstCallResolution": {
+              "type": "boolean"
+            },
+            "type": {
+              "type": "string",
+              "description": "dispostion type and it can take a value of the following values [DoNotDial, RedialNumber, FinalDisp, FinalApplyToCampaigns, AddActiveNumber, AddAndFinalize, AddAllNumbers]. If type is DoNotDial or RedialNumber then they need typeParameters. If type is FinalDisp, FinalApplyToCampaigns, AddAllNumbers or AddAndFinalize does not need typeParameters."
+            },
+            "typeParameters": {
+              "type": "object",
+              "properties": {
+                "allowChangeTimer": {
+                  "type": "boolean"
+                },
+                "attempts": {
+                  "type": "integer"
+                },
+                "useTimer": {
+                  "type": "boolean"
+                },
+                "timer": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer"
+                    },
+                    "hours": {
+                      "type": "integer"
+                    },
+                    "minutes": {
+                      "type": "integer"
+                    },
+                    "seconds": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "f9-skill": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer"
+        },
+        "skillName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "f9-user-general-info": {
+      "type": "object",
+      "description": "a five9 user general info",
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "canChangePassword": {
+          "type": "boolean"
+        },
+        "EMail": {
+          "type": "string"
+        },
+        "extension": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "IEXScheduled": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "mustChangePassword": {
+          "type": "boolean"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "osLogin": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        }
+      }
+    },
+    "f9-roles": {
+      "type": "object",
+      "description": "roles of five9 user",
+      "properties": {
+        "admin": {
+          "type": "object",
+          "properties": {
+            "permissions": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "agent": {
+          "type": "object",
+          "properties": {
+            "alwaysRecorded": {
+              "type": "boolean"
+            },
+            "attachVmToEmail": {
+              "type": "boolean"
+            },
+            "sendEmailOnVm": {
+              "type": "boolean"
+            },
+            "permissions": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "f9-user-info": {
+      "type": "object",
+      "properties": {
+        "generalInfo": {
+          "$ref": "#/definitions/f9-user-general-info"
+        },
+        "roles": {
+          "$ref": "#/definitions/f9-roles"
+        }
+      }
+    }
+  }
+}
